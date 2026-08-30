@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  passwordHash      String
+  name              String
+  role              Role     @default(STUDENT)
+  starBalance       Int      @default(0)
+  freeStarsGranted  Boolean  @default(false)
+  createdAt         DateTime @default(now())
+
+  boosts        Boost[]
+  starPurchases StarPurchase[]
+}
+
+model Teacher {
+  id         String   @id @default(cuid())
+  name       String
+  subject    String?
+  photoUrl   String?
+  totalStars Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  boosts Boost[]
+}
+
+model Boost {
+  id        String   @id @default(cuid())
+  studentId String
+  teacherId String
+  amount    Int
+  createdAt DateTime @default(now())
+
+  student User    @relation(fields: [studentId], references: [id])
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+
+  @@index([teacherId])
+  @@index([studentId])
+}
+
+model StarPurchase {
+  id                      String   @id @default(cuid())
+  studentId               String
+  stripeCheckoutSessionId String   @unique
+  starsGranted            Int
+  amountCents             Int
+  currency                String   @default("usd")
+  createdAt               DateTime @default(now())
+
+  student User @relation(fields: [studentId], references: [id])
+
+  @@index([studentId])
+}
