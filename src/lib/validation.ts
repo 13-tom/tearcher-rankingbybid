@@ -12,8 +12,11 @@ export const boostSchema = z.object({
   amount: z.coerce.number().int().min(1).max(MAX_BOOST_PER_ACTION),
 });
 
+export const PLATFORM_OPTIONS = ["ONLINE", "OFFLINE", "BOTH"] as const;
+
 export const teacherSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
   subject: z.string().trim().max(120).optional().or(z.literal("")),
   photoUrl: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
+  platform: z.enum(PLATFORM_OPTIONS).optional().or(z.literal("")),
 });

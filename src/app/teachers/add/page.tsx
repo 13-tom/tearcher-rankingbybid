@@ -55,6 +55,19 @@ export default async function AddTeacherPage({
             className="mt-1 w-full rounded border border-zinc-300 px-3 py-2"
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium">Platform (optional)</label>
+          <select
+            name="platform"
+            defaultValue=""
+            className="mt-1 w-full rounded border border-zinc-300 px-3 py-2"
+          >
+            <option value="">Not specified</option>
+            <option value="ONLINE">Online</option>
+            <option value="OFFLINE">Offline</option>
+            <option value="BOTH">Online &amp; Offline</option>
+          </select>
+        </div>
         <button
           type="submit"
           className="mt-2 rounded bg-black px-4 py-2 text-white hover:bg-zinc-800"

@@ -13,6 +13,12 @@ enum Role {
   ADMIN
 }
 
+enum Platform {
+  ONLINE
+  OFFLINE
+  BOTH
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -28,14 +34,15 @@ model User {
 }
 
 model Teacher {
-  id                      String   @id @default(cuid())
+  id                      String    @id @default(cuid())
   name                    String
   subject                 String?
   photoUrl                String?
-  totalStars              Int      @default(0)
+  platform                Platform?
+  totalStars              Int       @default(0)
   addedById               String?
-  stripeCheckoutSessionId String?  @unique
-  createdAt               DateTime @default(now())
+  stripeCheckoutSessionId String?   @unique
+  createdAt               DateTime  @default(now())
 
   boosts  Boost[]
   addedBy User?   @relation(fields: [addedById], references: [id])

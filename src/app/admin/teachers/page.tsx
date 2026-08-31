@@ -47,6 +47,16 @@ export default async function AdminTeachersPage({
           placeholder="Photo URL (optional)"
           className="rounded border border-zinc-300 px-3 py-2"
         />
+        <select
+          name="platform"
+          defaultValue=""
+          className="rounded border border-zinc-300 px-3 py-2"
+        >
+          <option value="">Platform (optional)</option>
+          <option value="ONLINE">Online</option>
+          <option value="OFFLINE">Offline</option>
+          <option value="BOTH">Online &amp; Offline</option>
+        </select>
         <button
           type="submit"
           className="self-start rounded bg-black px-4 py-2 text-white hover:bg-zinc-800"
@@ -63,9 +73,9 @@ export default async function AdminTeachersPage({
           >
             <div>
               <p className="font-medium">{teacher.name}</p>
-              {teacher.subject && (
-                <p className="text-sm text-zinc-500">{teacher.subject}</p>
-              )}
+              <p className="text-sm text-zinc-500">
+                {[teacher.subject, teacher.platform].filter(Boolean).join(" · ")}
+              </p>
             </div>
             <form action={deleteTeacherAction}>
               <input type="hidden" name="id" value={teacher.id} />

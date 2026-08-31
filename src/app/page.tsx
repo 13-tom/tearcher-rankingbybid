@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { formatPlatform } from "@/lib/format";
 
 export default async function LeaderboardPage() {
   const teachers = await prisma.teacher.findMany({
@@ -38,9 +39,11 @@ export default async function LeaderboardPage() {
                 )}
                 <div className="flex-1">
                   <p className="font-medium">{teacher.name}</p>
-                  {teacher.subject && (
-                    <p className="text-sm text-zinc-500">{teacher.subject}</p>
-                  )}
+                  <p className="text-sm text-zinc-500">
+                    {[teacher.subject, formatPlatform(teacher.platform)]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
                 </div>
                 <span className="font-bold">⭐ {teacher.totalStars}</span>
               </Link>

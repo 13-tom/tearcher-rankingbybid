@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { MAX_BOOST_PER_ACTION } from "@/lib/starPacks";
+import { formatPlatform } from "@/lib/format";
 import { boostTeacherAction } from "./actions";
 
 export default async function TeacherPage({
@@ -45,7 +46,9 @@ export default async function TeacherPage({
         )}
         <div>
           <h1 className="text-2xl font-bold">{teacher.name}</h1>
-          {teacher.subject && <p className="text-zinc-500">{teacher.subject}</p>}
+          <p className="text-zinc-500">
+            {[teacher.subject, formatPlatform(teacher.platform)].filter(Boolean).join(" · ")}
+          </p>
         </div>
       </div>
 

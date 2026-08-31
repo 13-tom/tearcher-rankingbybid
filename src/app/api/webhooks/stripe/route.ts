@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { Prisma } from "@prisma/client";
+import { Prisma, Platform } from "@prisma/client";
 import { stripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
+
+function parsePlatform(value: string | undefined): Platform | null {
+  return value && value in Platform ? (value as Platform) : null;
+}
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -33,6 +37,7 @@ export async function POST(req: Request) {
               name,
               subject: session.metadata?.subject || null,
               photoUrl: session.metadata?.photoUrl || null,
+              platform: parsePlatform(session.metadata?.platform),
               addedById: userId,
               stripeCheckoutSessionId: session.id,
             },

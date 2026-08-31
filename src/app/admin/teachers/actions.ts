@@ -21,19 +21,21 @@ export async function addTeacherAction(formData: FormData) {
     name: formData.get("name"),
     subject: formData.get("subject"),
     photoUrl: formData.get("photoUrl"),
+    platform: formData.get("platform"),
   });
 
   if (!parsed.success) {
     redirect(`/admin/teachers?error=${encodeURIComponent(parsed.error.issues[0].message)}`);
   }
 
-  const { name, subject, photoUrl } = parsed.data;
+  const { name, subject, photoUrl, platform } = parsed.data;
 
   await prisma.teacher.create({
     data: {
       name,
       subject: subject || null,
       photoUrl: photoUrl || null,
+      platform: platform || null,
       addedById: session.user.id,
     },
   });

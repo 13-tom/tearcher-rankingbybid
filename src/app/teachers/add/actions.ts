@@ -16,13 +16,14 @@ export async function createTeacherListingCheckoutAction(formData: FormData) {
     name: formData.get("name"),
     subject: formData.get("subject"),
     photoUrl: formData.get("photoUrl"),
+    platform: formData.get("platform"),
   });
 
   if (!parsed.success) {
     redirect(`/teachers/add?error=${encodeURIComponent(parsed.error.issues[0].message)}`);
   }
 
-  const { name, subject, photoUrl } = parsed.data;
+  const { name, subject, photoUrl, platform } = parsed.data;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
   const checkoutSession = await stripe.checkout.sessions.create({
@@ -44,6 +45,7 @@ export async function createTeacherListingCheckoutAction(formData: FormData) {
       name,
       subject: subject || "",
       photoUrl: photoUrl || "",
+      platform: platform || "",
     },
     success_url: `${appUrl}/teachers/add/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${appUrl}/teachers/add/cancel`,
