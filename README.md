@@ -21,6 +21,11 @@ Next.js (App Router) + Prisma + Postgres (Supabase) + NextAuth (email/password)
 
 - `DATABASE_URL` — your Postgres connection string (Supabase: Project Settings
   → Database → Connection string → "Transaction" pooler mode, port 6543).
+  Append `?pgbouncer=true` to the end of it, or Prisma will fail with a
+  "prepared statement already exists" error against the pooler.
+- `DIRECT_URL` — same connection string but the **direct** connection (Supabase:
+  same page, "Direct connection", port 5432, no "pooler" in the hostname). No
+  `?pgbouncer=true` needed here. Only used for `prisma db push`/`migrate`.
 - `NEXTAUTH_SECRET` — random string, e.g. `openssl rand -base64 32`.
 - `NEXTAUTH_URL` — `http://localhost:3000` locally, your deployed URL in prod.
 - `STRIPE_SECRET_KEY` / `STRIPE_PUBLISHABLE_KEY` — from the Stripe dashboard
