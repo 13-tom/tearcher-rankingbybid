@@ -13,14 +13,13 @@ enum Role {
 }
 
 model User {
-  id                String   @id @default(cuid())
-  email             String   @unique
-  passwordHash      String
-  name              String
-  role              Role     @default(STUDENT)
-  starBalance       Int      @default(0)
-  freeStarsGranted  Boolean  @default(false)
-  createdAt         DateTime @default(now())
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(STUDENT)
+  starBalance  Int      @default(0)
+  createdAt    DateTime @default(now())
 
   boosts        Boost[]
   starPurchases StarPurchase[]

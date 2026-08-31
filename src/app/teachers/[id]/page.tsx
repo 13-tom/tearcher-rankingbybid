@@ -58,7 +58,22 @@ export default async function TeacherPage({
       )}
 
       <div className="mt-6 rounded border border-zinc-200 p-4">
-        {session?.user ? (
+        {!session?.user ? (
+          <p>
+            <Link href="/login" className="font-medium underline">
+              Log in
+            </Link>{" "}
+            to boost this teacher.
+          </p>
+        ) : balance === 0 ? (
+          <p>
+            You need stars to boost a teacher.{" "}
+            <Link href="/stars/buy" className="font-medium underline">
+              Buy stars
+            </Link>{" "}
+            to get started.
+          </p>
+        ) : (
           <form action={boostTeacherAction} className="flex items-end gap-3">
             <input type="hidden" name="teacherId" value={teacher.id} />
             <div>
@@ -70,13 +85,14 @@ export default async function TeacherPage({
                 defaultValue={1}
                 className="mt-1 rounded border border-zinc-300 px-3 py-2"
               >
-                {Array.from({ length: MAX_BOOST_PER_ACTION }, (_, i) => i + 1).map(
-                  (n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ),
-                )}
+                {Array.from(
+                  { length: Math.min(balance ?? 0, MAX_BOOST_PER_ACTION) },
+                  (_, i) => i + 1,
+                ).map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
               </select>
             </div>
             <button
@@ -86,23 +102,6 @@ export default async function TeacherPage({
               Boost
             </button>
           </form>
-        ) : (
-          <p>
-            <Link href="/login" className="font-medium underline">
-              Log in
-            </Link>{" "}
-            to boost this teacher.
-          </p>
-        )}
-
-        {session?.user && balance === 0 && (
-          <p className="mt-3 text-sm text-zinc-500">
-            Out of stars?{" "}
-            <Link href="/stars/buy" className="font-medium underline">
-              Buy more
-            </Link>
-            .
-          </p>
         )}
       </div>
     </div>

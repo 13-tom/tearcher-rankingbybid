@@ -12,7 +12,7 @@ export default async function SignupPage({
     <div className="mx-auto max-w-sm px-4 py-16">
       <h1 className="text-2xl font-bold">Create your account</h1>
       <p className="mt-1 text-sm text-zinc-500">
-        You&apos;ll get 2 free stars to boost your favorite teacher.
+        Buy stars to boost your favorite teacher up the leaderboard.
       </p>
 
       {error && (

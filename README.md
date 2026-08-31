@@ -1,8 +1,8 @@
 # Teacher Rankings
 
-Students sign up, get 2 free stars, and spend stars to boost their favorite
-teacher up a public leaderboard. Once free stars run out, students buy more
-via Stripe. Teacher profiles are added by the site owner through `/admin/teachers`.
+Students sign up and buy stars via Stripe to boost their favorite teacher up
+a public leaderboard. Teacher profiles are added by the site owner through
+`/admin/teachers`.
 
 ## Stack
 

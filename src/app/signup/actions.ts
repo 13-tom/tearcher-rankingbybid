@@ -23,7 +23,7 @@ export async function signupAction(formData: FormData) {
 
   try {
     await prisma.user.create({
-      data: { name, email, passwordHash, starBalance: 2, freeStarsGranted: true },
+      data: { name, email, passwordHash },
     });
   } catch {
     redirect("/signup?error=" + encodeURIComponent("An account with that email already exists"));
