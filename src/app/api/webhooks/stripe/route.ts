@@ -21,32 +21,51 @@ export async function POST(req: Request) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    const userId = session.metadata?.userId;
-    const starsGranted = Number(session.metadata?.starsGranted ?? 0);
+    const kind = session.metadata?.kind;
 
-    if (userId && starsGranted > 0) {
-      try {
-        await prisma.$transaction([
-          prisma.starPurchase.create({
+    try {
+      if (kind === "teacher_listing") {
+        const userId = session.metadata?.userId;
+        const name = session.metadata?.name;
+        if (userId && name) {
+          await prisma.teacher.create({
             data: {
-              studentId: userId,
+              name,
+              subject: session.metadata?.subject || null,
+              photoUrl: session.metadata?.photoUrl || null,
+              addedById: userId,
               stripeCheckoutSessionId: session.id,
-              starsGranted,
-              amountCents: session.amount_total ?? 0,
-              currency: session.currency ?? "usd",
             },
-          }),
-          prisma.user.update({
-            where: { id: userId },
-            data: { starBalance: { increment: starsGranted } },
-          }),
-        ]);
-      } catch (err) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-          // Already processed this checkout session (Stripe retry) — no-op.
-        } else {
-          throw err;
+          });
         }
+      } else {
+        // Legacy/default: star purchase.
+        const userId = session.metadata?.userId;
+        const starsGranted = Number(session.metadata?.starsGranted ?? 0);
+
+        if (userId && starsGranted > 0) {
+          await prisma.$transaction([
+            prisma.starPurchase.create({
+              data: {
+                studentId: userId,
+                stripeCheckoutSessionId: session.id,
+                starsGranted,
+                amountCents: session.amount_total ?? 0,
+                currency: session.currency ?? "usd",
+              },
+            }),
+            prisma.user.update({
+              where: { id: userId },
+              data: { starBalance: { increment: starsGranted } },
+            }),
+          ]);
+        }
+      }
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+        // Already processed this checkout session (Stripe retry) — no-op.
+      } else {
+        throw err;
       }
     }
   }

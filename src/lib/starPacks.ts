@@ -16,3 +16,5 @@ export function getStarPack(id: string): StarPack | undefined {
 }
 
 export const MAX_BOOST_PER_ACTION = 5;
+
+export const TEACHER_LISTING_FEE_CENTS = 500; // $5 to add a teacher

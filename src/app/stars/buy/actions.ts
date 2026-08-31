@@ -33,6 +33,7 @@ export async function createCheckoutSessionAction(formData: FormData) {
     ],
     client_reference_id: session.user.id,
     metadata: {
+      kind: "star_purchase",
       userId: session.user.id,
       starsGranted: String(pack.stars),
     },

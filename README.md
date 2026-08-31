@@ -1,8 +1,11 @@
 # Teacher Rankings
 
 Students sign up and buy stars via Stripe to boost their favorite teacher up
-a public leaderboard. Teacher profiles are added by the site owner through
-`/admin/teachers`.
+a public leaderboard. Students can also add a teacher themselves for a
+one-time $5 fee at `/teachers/add` (see `TEACHER_LISTING_FEE_CENTS` in
+`src/lib/starPacks.ts`). The site owner can add/remove teachers for free at
+`/admin/teachers` (log in with `ADMIN_EMAIL`/`ADMIN_PASSWORD`, then click
+**Admin** in the nav, or go directly to `/admin/teachers`).
 
 ## Stack
 

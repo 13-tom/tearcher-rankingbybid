@@ -22,19 +22,23 @@ model User {
   starBalance  Int      @default(0)
   createdAt    DateTime @default(now())
 
-  boosts        Boost[]
-  starPurchases StarPurchase[]
+  boosts         Boost[]
+  starPurchases  StarPurchase[]
+  teachersAdded  Teacher[]
 }
 
 model Teacher {
-  id         String   @id @default(cuid())
-  name       String
-  subject    String?
-  photoUrl   String?
-  totalStars Int      @default(0)
-  createdAt  DateTime @default(now())
+  id                      String   @id @default(cuid())
+  name                    String
+  subject                 String?
+  photoUrl                String?
+  totalStars              Int      @default(0)
+  addedById               String?
+  stripeCheckoutSessionId String?  @unique
+  createdAt               DateTime @default(now())
 
-  boosts Boost[]
+  boosts  Boost[]
+  addedBy User?   @relation(fields: [addedById], references: [id])
 }
 
 model Boost {

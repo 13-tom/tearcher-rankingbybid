@@ -28,6 +28,9 @@ export default async function Navbar() {
             <Link href="/stars/buy" className="font-medium underline">
               Buy stars
             </Link>
+            <Link href="/teachers/add" className="font-medium underline">
+              Add a teacher
+            </Link>
             {session.user.role === "ADMIN" && (
               <Link href="/admin/teachers" className="font-medium underline">
                 Admin

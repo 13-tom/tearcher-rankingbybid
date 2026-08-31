@@ -8,13 +8,14 @@ import { teacherSchema } from "@/lib/validation";
 
 async function requireAdmin() {
   const session = await auth();
-  if (session?.user.role !== "ADMIN") {
+  if (!session?.user || session.user.role !== "ADMIN") {
     redirect("/");
   }
+  return session;
 }
 
 export async function addTeacherAction(formData: FormData) {
-  await requireAdmin();
+  const session = await requireAdmin();
 
   const parsed = teacherSchema.safeParse({
     name: formData.get("name"),
@@ -33,6 +34,7 @@ export async function addTeacherAction(formData: FormData) {
       name,
       subject: subject || null,
       photoUrl: photoUrl || null,
+      addedById: session.user.id,
     },
   });
 
